@@ -57,7 +57,7 @@ jobs:
             --wrap-mode=nodownload
           meson install -C build
           
-          sed -i '/^Requires\.private/d' plutobook-win-x64/lib/x86_64-linux-gnu/pkgconfig/plutobook.pc
+          sed -i '/^Requires\.private/d' plutobook-linux-x64/lib/x86_64-linux-gnu/pkgconfig/plutobook.pc
 
       - name: Upload PlutoBook build
         uses: actions/upload-artifact@v4
