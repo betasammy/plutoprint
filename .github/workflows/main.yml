@@ -32,6 +32,22 @@ jobs:
           repository: plutoprint/plutobook
           path: plutobook
           
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcairo2-dev \
+            libexpat1-dev \
+            libicu-dev \
+            libfreetype6-dev \
+            libfontconfig1-dev \
+            libharfbuzz-dev \
+            libcurl4-openssl-dev \
+            libturbojpeg0-dev \
+            libwebp-dev \
+            ninja-build \
+            meson
+            
       - name: Build PlutoBook
         run: |
           cd plutobook
