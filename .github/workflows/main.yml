@@ -44,6 +44,7 @@ jobs:
               ninja-build \
               meson \
               pkgconfig
+            pkg-config --list-all | grep jpeg
           CIBW_REPAIR_WHEEL_COMMAND_LINUX:
             auditwheel repair -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND:
