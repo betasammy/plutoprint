@@ -33,6 +33,7 @@ jobs:
           CIBW_BUILD: cp310-manylinux_x86_64 cp311-manylinux_x86_64 cp312-manylinux_x86_64
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_BEFORE_BUILD_LINUX: |
+            pip install auditwheel
             dnf install -y \
               cairo-devel \
               expat-devel \
@@ -48,7 +49,7 @@ jobs:
               pkgconfig && \
             dnf clean all
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
-            auditwheel repair -v -w {dest_dir} {wheel}
+            auditwheel repair -vv -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: >
             python -c "import plutoprint; print(plutoprint.__build_info__)"
             
