@@ -22,7 +22,44 @@ jobs:
           name: cibw-sdist
           path: ./dist/*.tar.gz
 
-  build_wheels:
+  build_linux_wheels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout plutobook
+        uses: actions/checkout@v4
+        with:
+          repository: plutoprint/plutobook
+          path: plutobook
+          
+      - name: Build PlutoBook
+        run: |
+          cd plutobook
+          meson setup build \
+            --prefix="${{ github.workspace }}/plutobook-linux-x64" \
+            --buildtype=release \
+            --wrap-mode=nodownload
+          meson install -C build
+
+      - name: Upload PlutoBook build
+        uses: actions/upload-artifact@v4
+        with:
+          name: plutobook-linux-x64
+          path: plutobook-linux-x64/
+          
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.0.0
+        env:
+          CIBW_BUILD: cp38-manylinux_x86_64 cp39-manylinux_x86_64 cp310-manylinux_x86_64 cp311-manylinux_x86_64 cp312-manylinux_x86_64
+          CIBW_ENVIRONMENT_LINUX: |
+            PKG_CONFIG=${{ github.workspace }}/plutobook-linux-x64/bin/pkgconf
+            PKG_CONFIG_PATH=${{ github.workspace }}/plutobook-linux-x64/lib/pkgconfig
+          CIBW_REPAIR_WHEEL_COMMAND_LINUX:
+            auditwheel repair -w {dest_dir} {wheel}
+          CIBW_TEST_COMMAND:
+            python -c "import plutoprint; print(plutoprint.__build_info__)"
+            
+  build_windows_wheels:
     runs-on: windows-latest
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     defaults:
@@ -101,7 +138,7 @@ jobs:
           path: ./wheelhouse/*.whl
 
   upload_pypi:
-    needs: [build_wheels, build_sdist]
+    needs: [build_windows_wheels, build_sdist]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     permissions:
