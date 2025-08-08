@@ -26,52 +26,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Checkout plutobook
-        uses: actions/checkout@v4
-        with:
-          repository: plutoprint/plutobook
-          path: plutobook
-          
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libcairo2-dev \
-            libexpat1-dev \
-            libicu-dev \
-            libfreetype6-dev \
-            libfontconfig1-dev \
-            libharfbuzz-dev \
-            libcurl4-openssl-dev \
-            libturbojpeg0-dev \
-            libwebp-dev \
-            ninja-build \
-            meson
-            
-      - name: Build PlutoBook
-        run: |
-          cd plutobook
-          meson setup build \
-            --prefix="${{ github.workspace }}/plutobook-linux-x64" \
-            --buildtype=release \
-            --wrap-mode=nodownload
-          meson install -C build
-          
-      - run: sed -i '/^Requires\.private/d' plutobook-linux-x64/lib/x86_64-linux-gnu/pkgconfig/plutobook.pc
-      
-      - name: Upload PlutoBook build
-        uses: actions/upload-artifact@v4
-        with:
-          name: plutobook-linux-x64
-          path: plutobook-linux-x64/
-          
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.0.0
         env:
           CIBW_BUILD: cp38-manylinux_x86_64 cp39-manylinux_x86_64 cp310-manylinux_x86_64 cp311-manylinux_x86_64 cp312-manylinux_x86_64
-          CIBW_BEFORE_BUILD_LINUX: apt-get update && apt-get install -y pkg-config
-          CIBW_ENVIRONMENT_LINUX: |
-            PKG_CONFIG_PATH=${{ github.workspace }}/plutobook-linux-x64/lib/x86_64-linux-gnu/pkgconfig
+          CIBW_BEFORE_BUILD_LINUX: |
+            yum install -y \
+              cairo-devel \
+              expat-devel \
+              libicu-devel \
+              freetype-devel \
+              fontconfig-devel \
+              harfbuzz-devel \
+              libcurl-devel \
+              libjpeg-turbo-devel \
+              libwebp-devel \
+              ninja-build \
+              meson \
+              pkgconfig
           CIBW_REPAIR_WHEEL_COMMAND_LINUX:
             auditwheel repair -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND:
