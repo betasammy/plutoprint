@@ -100,28 +100,22 @@ jobs:
           path: plutobook
       - name: Build and Install PlutoBook
         run: |
-          export PATH="/mingw64/bin:$PATH"
-          echo "PATH updated: $PATH"
           cd plutobook
           meson setup build \
             --buildtype=release \
             --wrap-mode=nodownload
           meson install --strip -C build
-
-      - name: Copy build dependencies
-        run: |
-          pwd /mingw64/bin
-
+          
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.0.0
         env:
           CIBW_BUILD: cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64 cp312-win_amd64
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel
           CIBW_ENVIRONMENT_WINDOWS:
-            PKG_CONFIG='${{ github.workspace }}/plutobook-win-x64/bin/pkgconf.exe'
-            PKG_CONFIG_PATH='${{ github.workspace }}/plutobook-win-x64/lib/pkgconfig'
+            PKG_CONFIG='D:/a/_temp/msys64/mingw64/bin/pkgconf.exe'
+            PKG_CONFIG_PATH='D:/a/_temp/msys64/mingw64/lib/pkgconfig'
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS:
-            delvewheel repair -vv -w {dest_dir} {wheel} --add-path ${{ github.workspace }}/plutobook-win-x64/bin
+            delvewheel repair -vv -w {dest_dir} {wheel} --add-path 'D:/a/_temp/msys64/mingw64/bin'
           CIBW_TEST_COMMAND:
             python -c "import plutoprint; print(plutoprint.__build_info__)"
 
