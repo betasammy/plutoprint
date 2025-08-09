@@ -103,7 +103,7 @@ jobs:
           cd plutobook
           meson setup build \
             --buildtype=release \
-            --wrap-mode=nodownload \
+            --wrap-mode=nodownload
           meson install --strip -C build
 
       - name: Copy build dependencies
