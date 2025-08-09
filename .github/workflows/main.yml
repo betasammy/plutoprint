@@ -49,7 +49,7 @@ jobs:
               pkgconfig && \
             dnf clean all
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
-            auditwheel -vv repair -w {dest_dir} {wheel}
+            auditwheel -v repair -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: >
             python -c "import plutoprint; print(plutoprint.__build_info__)"
             
