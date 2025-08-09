@@ -48,6 +48,10 @@ jobs:
               meson \
               pkgconfig && \
             dnf clean all
+            rpm -ql libjpeg-turbo-devel | grep turbojpeg
+            ls -l /usr/lib64/libturbojpeg.so
+            pkg-config --exists libturbojpeg && echo "pkg-config works"
+
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
             auditwheel -v repair -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: >
