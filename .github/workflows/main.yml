@@ -34,7 +34,6 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_BEFORE_BUILD_LINUX: |
             pip install auditwheel
-            dnf install -y turbojpeg-devel
             dnf install -y \
               cairo-devel \
               expat-devel \
@@ -43,15 +42,12 @@ jobs:
               fontconfig-devel \
               harfbuzz-devel \
               libcurl-devel \
-              libjpeg-turbo-devel \
+              turbojpeg-devel \
               libwebp-devel \
               ninja-build \
               meson \
               pkgconfig && \
             dnf clean all
-            rpm -ql libjpeg-turbo-devel | grep turbojpeg
-            ls -l /usr/lib64/libturbojpeg.so
-            pkg-config --exists libturbojpeg && echo "pkg-config works"
 
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
             auditwheel -v repair -w {dest_dir} {wheel}
