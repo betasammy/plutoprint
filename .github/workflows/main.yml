@@ -24,6 +24,7 @@ jobs:
 
   build_linux_wheels:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v4
       - name: Build wheels
@@ -78,8 +79,8 @@ jobs:
           install: >-
             mingw-w64-x86_64-expat
             mingw-w64-x86_64-icu
-            mingw-w64-x86_64-harfbuzz
             mingw-w64-x86_64-freetype
+            mingw-w64-x86_64-harfbuzz
             mingw-w64-x86_64-fontconfig
             mingw-w64-x86_64-cairo
             mingw-w64-x86_64-curl-winssl
@@ -103,7 +104,7 @@ jobs:
           meson setup build \
             --prefix='${{ github.workspace }}/plutobook-win-x64' \
             --buildtype=release \
-            --wrap-mode=nodownload \
+            --wrap-mode=nodownload
           meson install --strip -C build
 
       - name: Copy build dependencies
@@ -138,7 +139,7 @@ jobs:
           path: ./wheelhouse/*.whl
 
   upload_pypi:
-    needs: [build_windows_wheels, build_linux_wheels, build_sdist]
+    needs: [build_linux_wheels, build_windows_wheels, build_sdist]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     permissions:
