@@ -115,7 +115,7 @@ jobs:
             PKG_CONFIG='D:/a/_temp/msys64/mingw64/bin/pkgconf.exe'
             PKG_CONFIG_PATH='D:/a/_temp/msys64/mingw64/lib/pkgconfig'
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS:
-            delvewheel repair -vv -w {dest_dir} {wheel} --add-path 'D:/a/_temp/msys64/mingw64/bin'
+            delvewheel repair -vv -w {dest_dir} {wheel} --add-path D:/a/_temp/msys64/mingw64/bin
           CIBW_TEST_COMMAND:
             python -c "import plutoprint; print(plutoprint.__build_info__)"
 
