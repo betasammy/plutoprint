@@ -100,6 +100,8 @@ jobs:
           path: plutobook
       - name: Build and Install PlutoBook
         run: |
+          export PATH="/mingw64/bin:$PATH"
+          echo "PATH updated: $PATH"
           cd plutobook
           meson setup build \
             --buildtype=release \
