@@ -109,11 +109,13 @@ jobs:
             -Dcpp_link_args='-static -static-libgcc -static-libstdc++ -lwinpthread' \
             -Dcpp_args='-DCAIRO_WIN32_STATIC_BUILD -DCURL_STATICLIB -DU_STATIC_IMPLEMENTATION'
           meson install --strip -C build
-          
+
+      - name: Copy build dependencies
+        run: |
           sed -i '/^Requires\.private/d' plutobook-win-x64/lib/pkgconfig/plutobook.pc
           cp -v /mingw64/bin/pkgconf.exe plutobook-win-x64/bin
           cp -v /mingw64/bin/libpkgconf*.dll plutobook-win-x64/bin
-          
+
       - name: Upload PlutoBook build
         uses: actions/upload-artifact@v4
         with:
