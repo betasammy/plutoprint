@@ -129,7 +129,7 @@ jobs:
           CIBW_ENVIRONMENT_WINDOWS:
             PKG_CONFIG='${{ github.workspace }}/plutobook-win-x64/bin/pkgconf.exe'
             PKG_CONFIG_PATH='${{ github.workspace }}/plutobook-win-x64/lib/pkgconfig'
-          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS:
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: |
             delvewheel show -vv
             delvewheel repair -vv -w {dest_dir} {wheel} --add-path ${{ github.workspace }}/plutobook-win-x64/bin
           CIBW_TEST_COMMAND:
