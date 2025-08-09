@@ -98,24 +98,39 @@ jobs:
         with:
           repository: plutoprint/plutobook
           path: plutobook
-      - name: Build and Install PlutoBook
+      - name: Build PlutoBook
         run: |
           cd plutobook
           meson setup build \
+            --prefix='${{ github.workspace }}/plutobook-win-x64' \
             --buildtype=release \
-            --wrap-mode=nodownload
-          meson install --strip -C build
-          
+            --wrap-mode=nodownload \
+            --prefer-static \
+            -Dcpp_args='-DCAIRO_WIN32_STATIC_BUILD -DCURL_STATICLIB -DU_STATIC_IMPLEMENTATION'
+          meson install -C build --strip
+
+      - name: Copy build dependencies
+        run: |
+          sed -i '/^Requires\.private/d' plutobook-win-x64/lib/pkgconfig/plutobook.pc
+          cp -v /mingw64/bin/pkgconf.exe plutobook-win-x64/bin
+          cp -v /mingw64/bin/libpkgconf*.dll plutobook-win-x64/bin
+
+      - name: Upload PlutoBook build
+        uses: actions/upload-artifact@v4
+        with:
+          name: plutobook-win-x64
+          path: plutobook-win-x64/
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.0.0
         env:
           CIBW_BUILD: cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64 cp312-win_amd64
           CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel
           CIBW_ENVIRONMENT_WINDOWS:
-            PKG_CONFIG='D:/a/_temp/msys64/mingw64/bin/pkgconf.exe'
-            PKG_CONFIG_PATH='D:/a/_temp/msys64/mingw64/lib/pkgconfig'
+            PKG_CONFIG='${{ github.workspace }}/plutobook-win-x64/bin/pkgconf.exe'
+            PKG_CONFIG_PATH='${{ github.workspace }}/plutobook-win-x64/lib/pkgconfig'
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS:
-            delvewheel repair -vv -w {dest_dir} {wheel} --no-diagnostic --add-path D:/a/_temp/msys64/mingw64/bin
+            delvewheel repair -vv -w {dest_dir} {wheel} --add-path ${{ github.workspace }}/plutobook-win-x64/bin
           CIBW_TEST_COMMAND:
             python -c "import plutoprint; print(plutoprint.__build_info__)"
 
