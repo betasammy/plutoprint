@@ -166,7 +166,6 @@ jobs:
             cp312-macosx_universal2
             cp313-macosx_universal2
             cp314-macosx_universal2
-          CIBW_ARCHS_MACOS: universal2
           CIBW_TEST_COMMAND: >
             python -c "import plutoprint; print(plutoprint.__build_info__)"
 
