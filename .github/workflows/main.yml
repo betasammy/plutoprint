@@ -165,7 +165,7 @@ jobs:
           CIBW_BEFORE_BUILD_MACOS: |
             pip install delocate
             brew update
-            brew install cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp
+            brew install pkg-config cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp
           CIBW_TEST_COMMAND: >
             python -c "import plutoprint; print(plutoprint.__build_info__)"
 
