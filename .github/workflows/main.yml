@@ -24,7 +24,6 @@ jobs:
 
   build_manylinux_2_28_x86_64_image:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     permissions:
       contents: read
       packages: write
@@ -39,10 +38,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push Docker image
-        run: |
-          docker build -f docker/manylinux_2_28_x86_64.Dockerfile -t ghcr.io/${{ github.repository_owner }}/plutoprint-manylinux_2_28_x86_64:latest .
-          docker push ghcr.io/${{ github.repository_owner }}/plutoprint-manylinux_2_28_x86_64:latest
+      - name: Extract Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/plutoprint-manylinux_2_28_x86_64
+          
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/manylinux_2_28_x86_64.Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
   build_linux_wheels:
     needs: [build_manylinux_2_28_x86_64_image]
@@ -155,6 +164,7 @@ jobs:
 
   build_macos_wheels:
     runs-on: macos-latest
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v4
       - name: Build wheels
