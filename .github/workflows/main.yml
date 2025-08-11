@@ -166,6 +166,7 @@ jobs:
             pip install delocate
             brew update
             brew install pkg-config cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp
+            PKG_CONFIG_PATH="$(brew --prefix expat)/lib/pkgconfig:$(brew --prefix icu4c)/lib/pkgconfig:$(brew --prefix freetype)/lib/pkgconfig:$(brew --prefix fontconfig)/lib/pkgconfig:$(brew --prefix harfbuzz)/lib/pkgconfig:$(brew --prefix jpeg-turbo)/lib/pkgconfig:$(brew --prefix webp)/lib/pkgconfig"
           CIBW_TEST_COMMAND: >
             python -c "import plutoprint; print(plutoprint.__build_info__)"
 
