@@ -154,19 +154,17 @@ jobs:
           path: ./wheelhouse/*.whl
 
   build_macos_wheels:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.1.3
         env:
-          CIBW_BUILD: cp310-macosx_*
-          CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_BUILD: cp310-macosx_x86_64
           CIBW_BEFORE_BUILD_MACOS: |
             pip install delocate
             brew update
-            brew install pkg-config cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp
-            PKG_CONFIG_PATH="$(brew --prefix expat)/lib/pkgconfig:$(brew --prefix icu4c)/lib/pkgconfig:$(brew --prefix freetype)/lib/pkgconfig:$(brew --prefix fontconfig)/lib/pkgconfig:$(brew --prefix harfbuzz)/lib/pkgconfig:$(brew --prefix jpeg-turbo)/lib/pkgconfig:$(brew --prefix webp)/lib/pkgconfig"
+            brew install cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp
           CIBW_TEST_COMMAND: >
             python -c "import plutoprint; print(plutoprint.__build_info__)"
 
