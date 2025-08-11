@@ -170,16 +170,9 @@ jobs:
           cd plutobook
           export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
           meson setup build \
-            --prefix='${{ github.workspace }}/plutobook-macos-x86_64' \
             --buildtype=release \
             --wrap-mode=nodownload
           meson install -C build --strip
-          
-      - name: Upload PlutoBook build
-        uses: actions/upload-artifact@v4
-        with:
-          name: plutobook-macos-x86_64
-          path: plutobook-macos-x86_64/
           
       - uses: actions/checkout@v4
       - name: Build wheels
