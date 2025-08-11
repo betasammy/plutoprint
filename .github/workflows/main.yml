@@ -160,7 +160,6 @@ jobs:
         run: |
           brew update
           brew install cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp ninja meson pkg-config
-          export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
       - name: Checkout PlutoBook
         uses: actions/checkout@v4
         with:
@@ -169,6 +168,7 @@ jobs:
       - name: Build PlutoBook
         run: |
           cd plutobook
+          export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
           meson setup build \
             --prefix='${{ github.workspace }}/plutobook-macos-arm64' \
             --buildtype=release \
