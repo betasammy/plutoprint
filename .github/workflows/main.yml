@@ -162,6 +162,10 @@ jobs:
         env:
           CIBW_BUILD: cp310-macosx_*
           CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_BEFORE_BUILD_MACOS: |
+            pip install delocate
+            brew update
+            brew install cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp
           CIBW_TEST_COMMAND: >
             python -c "import plutoprint; print(plutoprint.__build_info__)"
 
