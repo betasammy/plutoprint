@@ -167,7 +167,7 @@ jobs:
             pip install delocate
           CIBW_ENVIRONMENT_MACOS: >
             PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
-            MACOSX_DEPLOYMENT_TARGET=10.13
+            MACOSX_DEPLOYMENT_TARGET=10.15
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
             delocate-listdeps {wheel} && delocate-wheel -w {dest_dir} -v {wheel}
           CIBW_TEST_COMMAND: >
