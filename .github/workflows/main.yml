@@ -165,6 +165,7 @@ jobs:
             pip install delocate
             brew update
             brew install cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp
+            export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
           CIBW_TEST_COMMAND: >
             python -c "import plutoprint; print(plutoprint.__build_info__)"
 
