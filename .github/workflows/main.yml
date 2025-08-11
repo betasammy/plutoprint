@@ -166,7 +166,7 @@ jobs:
             brew install cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp ninja meson pkg-config
             pip install delocate
           CIBW_ENVIRONMENT_MACOS: >
-            PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
+            PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
             delocate-listdeps {wheel} && delocate-wheel -w {dest_dir} -v {wheel}
           CIBW_TEST_COMMAND: >
