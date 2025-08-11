@@ -154,7 +154,7 @@ jobs:
           path: ./wheelhouse/*.whl
 
   build_macos_wheels:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - name: Install dependencies
         run: |
@@ -170,12 +170,17 @@ jobs:
           cd plutobook
           export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
           meson setup build \
-            --prefix='${{ github.workspace }}/plutobook-macos-arm64' \
+            --prefix='${{ github.workspace }}/plutobook-macos-x86_64' \
             --buildtype=release \
-            --wrap-mode=nodownload \
-            --prefer-static \
-            -Dcpp_args='-DCURL_STATICLIB -DU_STATIC_IMPLEMENTATION'
+            --wrap-mode=nodownload
           meson install -C build --strip
+          
+      - name: Upload PlutoBook build
+        uses: actions/upload-artifact@v4
+        with:
+          name: plutobook-macos-x86_64
+          path: plutobook-macos-x86_64/
+          
       - uses: actions/checkout@v4
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.1.3
@@ -185,11 +190,11 @@ jobs:
             pip install delocate
           CIBW_TEST_COMMAND: >
             python -c "import plutoprint; print(plutoprint.__build_info__)"
-
+            
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-macos-wheels
+          name: cibw-wheels-macos-x86_64
           path: ./wheelhouse/*.whl
           
   upload_pypi:
