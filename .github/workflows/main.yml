@@ -154,7 +154,7 @@ jobs:
           path: ./wheelhouse/*.whl
 
   build_macos_wheels:
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
       - name: Install dependencies
         run: |
@@ -170,7 +170,7 @@ jobs:
         run: |
           cd plutobook
           meson setup build \
-            --prefix='${{ github.workspace }}/plutobook-macos-x86_64' \
+            --prefix='${{ github.workspace }}/plutobook-macos-arm64' \
             --buildtype=release \
             --wrap-mode=nodownload \
             --prefer-static \
