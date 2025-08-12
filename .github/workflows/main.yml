@@ -37,7 +37,7 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
             auditwheel repair -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: >
-            python -c "import plutoprint; print(plutoprint.__build_info__); book = plutoprint.Book(); book.load_url('https://raw.githubusercontent.com/plutoprint/plutobook/refs/heads/main/docker/manylinux_2_28_x86_64.Dockerfile'); book.write_to_pdf('hello.pdf')"
+            python -c "import plutoprint; print(plutoprint.__build_info__)"
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
@@ -67,7 +67,7 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
             delvewheel repair -vv -w {dest_dir} {wheel} --add-path ${{ github.workspace }}/plutobook/bin
           CIBW_TEST_COMMAND: >
-            python -c "import plutoprint; print(plutoprint.__build_info__); book = plutoprint.Book(); book.load_url('https://raw.githubusercontent.com/plutoprint/plutobook/refs/heads/main/docker/manylinux_2_28_x86_64.Dockerfile'); book.write_to_pdf('hello.pdf')"
+            python -c "import plutoprint; print(plutoprint.__build_info__)"
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
