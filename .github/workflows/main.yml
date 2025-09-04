@@ -101,6 +101,7 @@ jobs:
             PKG_CONFIG_PATH='/opt/homebrew/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH'
           CIBW_BEFORE_BUILD_MACOS: |
             pip install delocate
+            brew update
             brew install plutobook ninja meson pkg-config
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: >
             delocate-wheel -v -w {dest_dir} {wheel}
