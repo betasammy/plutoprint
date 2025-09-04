@@ -84,7 +84,7 @@ jobs:
           path: ./wheelhouse/*.whl
 
   build_macos_wheels:
-    runs-on: macos-11
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
       - name: Build wheels
@@ -101,7 +101,7 @@ jobs:
             PKG_CONFIG_PATH='/opt/homebrew/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH'
           CIBW_BEFORE_BUILD_MACOS: |
             pip install delocate
-            brew install cairo expat icu4c freetype fontconfig harfbuzz curl jpeg-turbo webp ninja meson pkg-config
+            brew install plutobook ninja meson pkg-config
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: >
             delocate-wheel -v -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: >
