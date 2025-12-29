@@ -88,6 +88,7 @@ def _init_default_fontconfig_path():
         fontconfig_dirs.append(os.path.dirname(fontconfig_file))
     if fontconfig_dirs:
         plutobook_set_fontconfig_path(os.pathsep.join(fontconfig_dirs))
+        print(os.pathsep.join(fontconfig_dirs))
 
 _init_default_fontconfig_path()
 del _init_default_fontconfig_path
